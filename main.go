@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net"
-	"time"
-	"xdns/config"
+    "fmt"
+    "log"
+    "net"
+    "xdns/config"
 )
 
 func main() {
@@ -26,7 +25,7 @@ func main() {
 
     for {
         requestBuf := make([]byte, 1024)
-        bytesRead, addr, err := ln.ReadFrom(requestBuf)
+        bytesRead, _, err := ln.ReadFrom(requestBuf)
         if bytesRead < 0 {
         }
         if err != nil {
@@ -34,14 +33,6 @@ func main() {
         }
 
         log.Printf("Received request: %d bytes.", bytesRead)
-        log.Printf(string(requestBuf))
-        go response(ln, addr, requestBuf)
     }
-}
 
-func response(server net.PacketConn, addr net.Addr, buf []byte) {
-    time := time.Now().Format(time.ANSIC)
-    responseStr := fmt.Sprintf("time received: %v. Your message: %v!", time, string(buf))
-
-	server.WriteTo([]byte(responseStr), addr)
 }
